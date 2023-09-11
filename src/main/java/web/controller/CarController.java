@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import web.dao.CarDAO;
 import web.model.Car;
+import web.service.CarServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -19,17 +20,8 @@ public class CarController {
     @GetMapping("/cars")
     public String showCars(@RequestParam(value = "count", required = false) String count
             , Model model) {
-        List<Car> cars = new ArrayList<>();
-        List <Car> carList = new CarDAO().getCarList();
 
-        if (count == null || Integer.parseInt(count) > 5) {
-            count = "5";
-        }
-
-        for (int i = 0; i <= (Integer.parseInt(count) - 1); i++ ) {
-            cars.add(carList.get(i));
-        }
-
+        List<Car> cars = new CarServiceImpl().getCars(count);
         model.addAttribute("cars", cars);
 
         return "cars";
